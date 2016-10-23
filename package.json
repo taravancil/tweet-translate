@@ -1,0 +1,12 @@
+{
+  "name": "tweet-translate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Tara Vancil <tbvanc@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "micro": "^6.1.0"
+  }
+}
