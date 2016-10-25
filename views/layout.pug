@@ -3,7 +3,7 @@ html
   include head.pug
   body
     header
-      if user.authenticated
+      if user
         span Hi, 
         span.username  #{user.username}! 
         a(href='/logout') Logout
