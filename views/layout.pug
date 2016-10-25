@@ -4,7 +4,8 @@ html
   body
     header
       if user.authenticated
-        p `Hi, ${user.username}`
+        span Hi, 
+        span.username  #{user.username}! 
         a(href='/logout') Logout
       else
         a(href='/login') Login with Twitter
