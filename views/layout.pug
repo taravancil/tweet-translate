@@ -2,6 +2,11 @@ doctype html
 html
   include head.pug
   body
-    include header.pug
+    header
+      if user.authenticated
+        p `Hi, ${user.username}`
+        a(href='/logout') Logout
+      else
+        a(href='/login') Login with Twitter
     h1 Help Translate @taravancil's Tweets
     message= message
