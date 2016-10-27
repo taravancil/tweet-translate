@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-const express = require('express')
+import express from 'express'
+import {OAuth} from 'oauth'
+
 const app = express()
 
 app.set('view engine', 'pug')
