@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import cookieSession from 'cookie-session'
 import express from 'express'
 import {OAuth} from 'oauth'
 
