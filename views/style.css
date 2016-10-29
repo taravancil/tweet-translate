@@ -6,8 +6,19 @@ body {
     line-height: 1.5;
     font-family: -apple-system, BlinkMacSystemFont, Ubuntu, sans-serif;
     color: #111;
+    padding: 1em;
+    margin: 0;
 }
 
-.username {
+sidebar {
+    display: block;
+    width: 300px;
+}
+
+sidebar .username {
     font-weight: bold;
+}
+
+.rounded {
+    border-radius: 2px;
 }

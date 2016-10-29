@@ -2,11 +2,43 @@ doctype html
 html
   include head.pug
   body
-    header
+    sidebar
       if user
-        span Hi, 
-        span.username  #{user.username}! 
-        a(href='/logout') Logout
+        style.
+          .userpanel {
+            background: ##{user.headerBg};
+            color: ##{user.avatarBorder};
+            padding: 1em;
+          }
+
+          .userpanel .logout {
+            color: ##{user.avatarBorder};
+          }
+
+          sidebar .username {
+            font-weight: bold;
+          }
+
+          sidebar .avatar {
+            border: 2.5px solid ##{user.avatarBorder};
+            margin-bottom: .5em;
+          }
+
+          body {
+            color: ##{user.textColor};
+          }
+
+          a {
+            color: ##{user.linkColor};
+          }
+
+        div.userpanel.rounded
+          image(src=user.avatar class='avatar rounded' width='48' height='48')
+          div
+            span hi, 
+            span.username  #{user.screenName}
+            a(href='/logout' class='logout') Logout
+
       else
         a(href='/login') Login with Twitter
     h1 Help Translate @taravancil's Tweets
