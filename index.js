@@ -85,7 +85,8 @@ app.get('/', (req, res) => {
 
       res.render('layout', {
         user: req.session.user,
-        content: `<ul id="tweets">${tweetsListItems}</ul>`
+        content: `<ul id="tweets">${tweetsListItems}</ul><a
+        id='fetch-more-tweets'>Get more tweets</a>`
       })
     })
     .catch(err => {
