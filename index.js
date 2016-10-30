@@ -4,7 +4,7 @@ import cookieSession from 'cookie-session'
 import crypto from 'crypto'
 import express from 'express'
 import {OAuth} from 'oauth'
-import {getTweets} from './db'
+import {addUser, getTweets} from './db'
 
 const app = express()
 
@@ -58,18 +58,25 @@ app.get('/login-success', (req, res) => {
 
           const userData = JSON.parse(data)
 
-          // Update the session
-          req.session.user = {
-            screenName: userData.screen_name,
-            avatar: userData.profile_image_url_https,
-            linkColor: userData.profile_link_color,
-            textColor: userData.profile_text_color,
-            headerBg: userData.profile_link_color,
-            avatarBorder: userData.profile_sidebar_border_color
-          }
+          // Add the user to the database
+          addUser(userData.screen_name)
+            .then(() => {
+              // Update the session
+              req.session.user = {
+                screenName: userData.screen_name,
+                avatar: userData.profile_image_url_https,
+                linkColor: userData.profile_link_color,
+                textColor: userData.profile_text_color,
+                headerBg: userData.profile_link_color,
+                avatarBorder: userData.profile_sidebar_border_color
+              }
 
-          // Success, redirect to the home page
-          res.redirect(302, '/')
+              res.redirect(302, '/')
+            })
+            .catch(err => {
+              console.error(err)
+              res.status(500).send('Sorry, we messed up :(')
+            })
         })
   })
 })

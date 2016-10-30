@@ -12,3 +12,16 @@ export function getTweets (n, offset) {
     })
   })
 }
+
+export function addUser (screenName) {
+  return new Promise((resolve, reject) => {
+    const isAdmin = screenName === 'taravancil'
+
+    db.run('INSERT INTO users VALUES (NULL, ?, ?)', [screenName, isAdmin], (err) => {
+      if(err) {
+        reject(err)
+      }
+      resolve()
+    })
+  })
+}
