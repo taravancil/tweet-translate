@@ -75,7 +75,7 @@ app.get('/login-success', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  getTweets(5)
+  getTweets(5, 0)
     .then(tweets => {
       let tweetsListItems
 
@@ -90,6 +90,23 @@ app.get('/', (req, res) => {
     })
     .catch(err => {
       console.error(err)
+    })
+})
+
+app.get('/fetch-tweets', (req, res) => {
+  getTweets(5, req.query.offset)
+    .then(tweets => {
+      let tweetsListItems
+
+      for (const tweet of tweets) {
+        tweetsListItems += `<li>${tweet.html}</li>`
+      }
+      res.send(tweetsListItems)
+
+    })
+    .catch(err => {
+      console.error(err)
+      res.send('')
     })
 })
 
