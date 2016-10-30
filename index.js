@@ -4,6 +4,7 @@ import cookieSession from 'cookie-session'
 import crypto from 'crypto'
 import express from 'express'
 import {OAuth} from 'oauth'
+import {getTweets} from './db'
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use(cookieSession({
   keys: cookieSigningKeys
 }))
 
+app.use(express.static('dist'))
 app.set('view engine', 'pug')
 app.set('views', './views')
 
@@ -73,7 +75,16 @@ app.get('/login-success', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  res.render('layout', {user: req.session.user})
+  getTweets()
+    .then(tweets => {
+      res.render('layout', {
+        user: req.session.user,
+        tweets: tweets
+      })
+    })
+    .catch(err => {
+      console.error(err)
+    })
 })
 
 app.get('/login', (req, res) => {
