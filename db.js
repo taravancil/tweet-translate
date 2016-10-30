@@ -15,13 +15,30 @@ export function getTweets (n, offset) {
 
 export function addUser (screenName) {
   return new Promise((resolve, reject) => {
-    const isAdmin = screenName === 'taravancil'
+    checkIfUserExists()
+      .then((userExists) => {
+        if (userExists) resolve()
 
-    db.run('INSERT INTO users VALUES (NULL, ?, ?)', [screenName, isAdmin], (err) => {
-      if(err) {
+        const isAdmin = screenName === 'taravancil'
+
+        db.run('INSERT INTO users VALUES (NULL, ?, ?)', [screenName, isAdmin], (err) => {
+          if (err) {
+            reject(err)
+          }
+          resolve()
+        })
+      })
+      .catch(err => reject(err))
+  })
+}
+
+function checkIfUserExists (screenName) {
+  return new Promise ((resolve, reject) => {
+    db.get(`SELECT * FROM users WHERE screen_name = ?`, screenName, (err, row) => {
+      if (err) {
         reject(err)
       }
-      resolve()
+      resolve(row !== null)
     })
   })
 }
