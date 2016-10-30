@@ -75,11 +75,17 @@ app.get('/login-success', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  getTweets()
+  getTweets(5)
     .then(tweets => {
+      let tweetsListItems
+
+      for (const tweet of tweets) {
+        tweetsListItems += `<li>${tweet.html}</li>`
+      }
+
       res.render('layout', {
         user: req.session.user,
-        tweets: tweets
+        content: `<ul id="tweets">${tweetsListItems}</ul>`
       })
     })
     .catch(err => {

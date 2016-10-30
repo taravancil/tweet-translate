@@ -1,5 +1,3 @@
-include mixins.pug
-
 doctype html
 html
   include head.pug
@@ -45,9 +43,4 @@ html
         a(href='/login') Login with Twitter
 
     h1 Help Translate @taravancil's Tweets  
-    main
-    if tweets
-      each tweet in tweets
-        +tweet(tweet.id, tweet.tweet_id, tweet.html)
-    else
-      p 'no tweets'
+    main!= content
