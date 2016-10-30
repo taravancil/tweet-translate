@@ -77,15 +77,9 @@ app.get('/login-success', (req, res) => {
 app.get('/', (req, res) => {
   getTweets(5, 0)
     .then(tweets => {
-      let tweetsListItems
-
-      for (const tweet of tweets) {
-        tweetsListItems += `<li>${tweet.html}</li>`
-      }
-
       res.render('layout', {
         user: req.session.user,
-        content: `<ul id="tweets">${tweetsListItems}</ul><a
+        content: `<ul id="tweets">${renderTweetsListItems(tweets)}</ul><a
         id='fetch-more-tweets'>Get more tweets</a>`
       })
     })
@@ -97,13 +91,7 @@ app.get('/', (req, res) => {
 app.get('/fetch-tweets', (req, res) => {
   getTweets(5, req.query.offset)
     .then(tweets => {
-      let tweetsListItems
-
-      for (const tweet of tweets) {
-        tweetsListItems += `<li>${tweet.html}</li>`
-      }
-      res.send(tweetsListItems)
-
+      res.send(renderTweetsListItems(tweets))
     })
     .catch(err => {
       console.error(err)
@@ -128,3 +116,13 @@ const port = 3000
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
+
+function renderTweetsListItems (tweets) {
+  let tweetsListItems
+
+  for (const tweet of tweets) {
+    tweetsListItems += `<li>${tweet.html}</li>`
+  }
+
+  return tweetsListItems
+}
