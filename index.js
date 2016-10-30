@@ -79,8 +79,8 @@ app.get('/', (req, res) => {
     .then(tweets => {
       res.render('layout', {
         user: req.session.user,
-        content: `<ul id="tweets">${renderTweetsListItems(tweets)}</ul><a
-        id='fetch-more-tweets'>Get more tweets</a>`
+        content: `<ul id="tweets">${renderTweetsListItems(tweets)}</ul><button
+        id='fetch-more-tweets' class='btn btn-action'>Get more tweets</button>`
       })
     })
     .catch(err => {
