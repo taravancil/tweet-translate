@@ -66,6 +66,15 @@ export function getTweetByTweetID (tweetID) {
   })
 }
 
+export function getScreenNameByID (id) {
+  return new Promise ((resolve, reject) => {
+    db.get(`SELECT screen_name FROM users WHERE id = ?`, id, (err, row) => {
+      if (err) reject(err)
+      row === undefined ? resolve(null) : resolve(row.screen_name)
+    })
+  })
+}
+
 function getUserIDByScreenName (screenName) {
   return new Promise ((resolve, reject) => {
     db.get(`SELECT * FROM users WHERE screen_name = ?`, screenName, (err, row) => {
