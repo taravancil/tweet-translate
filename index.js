@@ -30,7 +30,8 @@ let oAuthTokenSecret
 const cookieSigningKeys = [crypto.randomBytes(16), crypto.randomBytes(16)]
 app.use(cookieSession({
   name: 'session',
-  keys: cookieSigningKeys
+  keys: cookieSigningKeys,
+  maxAge: 8.64e5
 }))
 
 app.use(express.static('dist'))
