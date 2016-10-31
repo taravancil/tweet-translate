@@ -6,7 +6,7 @@ import crypto from 'crypto'
 import express from 'express'
 import xss from 'xss'
 import {OAuth} from 'oauth'
-import {addUser, getTweets, addComment} from './db'
+import {addUser, getTweets, addComment, getTweetByTweetID} from './db'
 
 const app = express()
 
@@ -102,6 +102,15 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/:tweetID', (req, res) => {
+  getTweetByTweetID(req.params.tweetID)
+    .then(tweet => {
+      console.log(tweet)
+      res.render('layout', {user: req.session.user, content: renderTweet(tweet)})
+    })
+    .catch(err => console.error(err))// res.status(404).send('Page Not Found'))
+ })
+
 app.get('/fetch-tweets', (req, res) => {
   getTweets(5, req.query.offset)
     .then(tweets => {
@@ -154,15 +163,28 @@ function renderTweetsListItems (tweets) {
   let tweetsListItems
 
   for (const tweet of tweets) {
-    const addTranslationBtn = `<button name="add-comment" class="btn btn-link"` +
-                              `data-id='${tweet.id}' data-type='translation'>` +
-                              `Suggest Translation</button>`
-    const addCommentBtn = `<button name="add-comment" class="btn btn-link"` +
-                          `data-id='${tweet.id}' data-type='comment'>` +
-                          `Add Comment</button>`
-    const link = `<a href=/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
-    tweetsListItems += `<li id='tweet-${tweet.id}' class='tweet'>${tweet.html}<div id='tweet-links-${tweet.id}' class='tweet-links'>${addTranslationBtn}${addCommentBtn}${link}</div></li>`
+    const links = renderTweetActions(tweet)
+    tweetsListItems += `<li id='tweet-${tweet.id}' class='tweet'>${tweet.html}` +
+                       `${links}</li>`
   }
 
   return tweetsListItems
+}
+
+function renderTweetActions (tweet) {
+  const addTranslationBtn = `<button name="add-comment" class="btn btn-link"` +
+                            `data-id='${tweet.id}' data-type='translation'>` +
+                            `Suggest Translation</button>`
+  const addCommentBtn = `<button name="add-comment" class="btn btn-link"` +
+                        `data-id='${tweet.id}' data-type='comment'>` +
+                        `Add Comment</button>`
+  const link = `<a href=/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
+
+  return `<div id='tweet-links-${tweet.id} class='tweet-links'>` +
+         `${addTranslationBtn}${addCommentBtn}${link}</div>`
+}
+
+function renderTweet (tweet) {
+  const links = renderTweetActions(tweet)
+  return `<div class='tweet'>${tweet.html}</div>`
 }
