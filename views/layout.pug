@@ -2,26 +2,33 @@ doctype html
 html
   include head.pug
   body
-    sidebar
+    header.rounded
       if user
         style.
-          .userpanel {
+          header {
             background: ##{user.headerBg};
             color: ##{user.avatarBorder};
             padding: 1em;
           }
 
-          .userpanel .logout {
+          header .links {
+            display: flex;
+            position: absolute;
+            right: 1em;
+            bottom: 1em;
+          }
+
+          header .logout {
             color: ##{user.avatarBorder};
           }
 
-          sidebar .username {
+          header .username {
             font-weight: bold;
           }
 
-          sidebar .avatar {
+          header .avatar {
+            margin-right: 1em;
             border: 2.5px solid ##{user.avatarBorder};
-            margin-bottom: .5em;
           }
 
           body {
@@ -32,12 +39,11 @@ html
             color: ##{user.linkColor};
           }
 
-        div.userpanel.rounded
-          image(src=user.avatar class='avatar rounded' width='48' height='48')
-          div
-            span hi, 
-            span.username  #{user.screenName}
-            a(href='/logout' class='logout') Logout
+        image(src=user.avatar class='avatar rounded' width='48' height='48')
+        span hi, 
+        span.username  #{user.screenName}
+        span.links
+          a(href='/logout' class='logout') Logout
 
       else
         a(href='/login') Login with Twitter

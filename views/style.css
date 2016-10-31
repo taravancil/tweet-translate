@@ -10,13 +10,8 @@ body {
     margin: 0;
 }
 
-sidebar {
-    display: block;
-    width: 300px;
-}
-
-sidebar .username {
-    font-weight: bold;
+header {
+    position: relative;
 }
 
 .rounded {
