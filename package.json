@@ -15,7 +15,8 @@
     "express": "^4.14.0",
     "oauth": "^0.9.14",
     "pug": "^2.0.0-beta6",
-    "sqlite3": "^3.1.7"
+    "sqlite3": "^3.1.7",
+    "xss": "^0.2.16"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

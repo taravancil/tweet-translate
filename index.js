@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import cookieSession from 'cookie-session'
 import crypto from 'crypto'
 import express from 'express'
+import xss from 'xss'
 import {OAuth} from 'oauth'
 import {addUser, getTweets, addComment} from './db'
 
@@ -118,8 +119,9 @@ app.post('/add-comment', (req, res) => {
     res.redirect(302, '/prompt-login')
   }
 
-  // TODO filter input
-  addComment(req.body.comment, req.session.user.id, 'translation', 1)
+  const escaped = xss(req.body.comment)
+
+  addComment(escaped, req.session.user.id, 'translation', 1)
     .then(() => res.redirect(302, '/'))
     // TODO redirect to parent permalink
     // .then(() => res.redirect(302, '/comments/${parent}')
