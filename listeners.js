@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 const commentForm = (id, type, defaultValue = '') => {
-  const hidden = `<input type='hidden' value=${id} />`
+  const hidden = `<input type='hidden' name='parent' value=${id} />`
   const input = `<textarea name='comment' data-type=${type}>${defaultValue}</textarea>`
   const btn = `<button type='submit' class='btn btn-action'>Submit</button>`
 
