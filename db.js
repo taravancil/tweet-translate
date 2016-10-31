@@ -48,6 +48,15 @@ export function addComment (text, uid, type, parent) {
   })
 }
 
+export function getComments (id) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM comments where parent = ?', id, (err, rows) => {
+      if (err) reject(err)
+      resolve(rows)
+    })
+  })
+}
+
 export function getTweetByTweetID (tweetID) {
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM tweets WHERE tweet_id = ?', tweetID, (err, row) => {
