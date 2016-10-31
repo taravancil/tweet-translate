@@ -15,9 +15,9 @@ export function getTweets (n, offset) {
 
 export function addUser (screenName) {
   return new Promise((resolve, reject) => {
-    checkIfUserExists()
-      .then((userExists) => {
-        if (userExists) resolve()
+    getUserIDByScreenName(screenName)
+      .then((id) => {
+        if (id !== null) resolve(id)
 
         const isAdmin = screenName === 'taravancil'
 
@@ -25,20 +25,37 @@ export function addUser (screenName) {
           if (err) {
             reject(err)
           }
-          resolve()
         })
       })
       .catch(err => reject(err))
   })
 }
 
-function checkIfUserExists (screenName) {
+export function addComment (text, uid, type, parent) {
+  const isTranslation = type === 'translation'
+
+  return new Promise((resolve, reject) => {
+    db.run(
+      'INSERT INTO comments VALUES (NULL, ?, NULL, ?, ?, ?, NULL)',
+      [uid, text, parent, isTranslation],
+      (err) => {
+        if (err) {
+          reject(err)
+        }
+        resolve()
+      }
+    )
+  })
+}
+
+function getUserIDByScreenName (screenName) {
   return new Promise ((resolve, reject) => {
     db.get(`SELECT * FROM users WHERE screen_name = ?`, screenName, (err, row) => {
       if (err) {
         reject(err)
       }
-      resolve(row !== null)
+
+      row === undefined ? resolve(null) : resolve(row.id)
     })
   })
 }
