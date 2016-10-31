@@ -61,7 +61,6 @@ function getUserIDByScreenName (screenName) {
   return new Promise ((resolve, reject) => {
     db.get(`SELECT * FROM users WHERE screen_name = ?`, screenName, (err, row) => {
       if (err) reject(err)
-
       row === undefined ? resolve(null) : resolve(row.id)
     })
   })
