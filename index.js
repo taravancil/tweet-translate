@@ -95,7 +95,8 @@ app.get('/', (req, res) => {
         content: `<ul id='tweets'
   class='tweets'>${renderTweetsListItems(tweets)}</ul><button
   id='fetch-more-tweets' class='btn btn-action'>Get more
-  tweets</button>`
+  tweets</button>`,
+        scripts: ['listeners.js']
       })
     })
     .catch(err => {
