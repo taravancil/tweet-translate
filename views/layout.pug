@@ -57,4 +57,7 @@ html
     main
       h1 Help Translate @taravancil's Tweets
       div!= content
-    script(src='listeners.js')
+
+    if scripts
+      each script in scripts
+        script(src=script)

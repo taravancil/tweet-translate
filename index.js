@@ -103,13 +103,19 @@ app.get('/', (req, res) => {
     })
 })
 
-app.get('/:tweetID', (req, res) => {
+app.get('/tweet/:tweetID', (req, res) => {
   getTweetByTweetID(req.params.tweetID)
     .then(tweet => {
-      console.log(tweet)
-      res.render('layout', {user: req.session.user, content: renderTweet(tweet)})
+      const content = renderTweet(tweet)
+      const scripts = ['../listeners.js']
+
+      res.render('layout',
+                 {user: req.session.user,
+                  content: content,
+                  scripts: scripts
+                 })
     })
-    .catch(err => console.error(err))// res.status(404).send('Page Not Found'))
+    .catch(err => res.status(404).send('Page Not Found'))
  })
 
 app.get('/fetch-tweets', (req, res) => {
