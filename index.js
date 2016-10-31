@@ -129,8 +129,12 @@ app.listen(port, () => {
 function renderTweetsListItems (tweets) {
   let tweetsListItems
 
+  const addTranslationBtn = '<button class="btn btn-link">Suggest Translation</button>'
+  const addCommentBtn = '<button class="btn btn-link">Add Comment</button>'
+
   for (const tweet of tweets) {
-    tweetsListItems += `<li class='tweet'>${tweet.html}</li>`
+    tweetsListItems += `<li
+    class='tweet'>${tweet.html}${addTranslationBtn}${addCommentBtn}</li>`
   }
 
   return tweetsListItems

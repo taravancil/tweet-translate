@@ -43,6 +43,11 @@ header {
     transition: all .15s ease;
 }
 
+.btn-link {
+    border: none;
+    text-decoration: underline;
+}
+
 .btn:hover {
     background: #000;
     color: #fff;
