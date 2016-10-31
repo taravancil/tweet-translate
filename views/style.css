@@ -24,10 +24,6 @@ header {
     position: relative;
 }
 
-.rounded {
-    border-radius: 2px;
-}
-
 .btn {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -75,4 +71,12 @@ ul.tweets {
     background: #fafafa;
     border-radius: 2px;
     border: 1px solid #eee;
+}
+
+.rounded {
+    border-radius: 2px;
+}
+
+.hidden {
+    visibility: hidden;
 }
