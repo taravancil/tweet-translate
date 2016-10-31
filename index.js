@@ -6,7 +6,13 @@ import crypto from 'crypto'
 import express from 'express'
 import xss from 'xss'
 import {OAuth} from 'oauth'
-import {addUser, getTweets, addComment, getTweetByTweetID} from './db'
+import {
+  addUser,
+  getTweets,
+  addComment,
+  getComments,
+  getTweetByTweetID
+} from './db'
 
 const app = express()
 
@@ -107,17 +113,23 @@ app.get('/', (req, res) => {
 app.get('/tweet/:tweetID', (req, res) => {
   getTweetByTweetID(req.params.tweetID)
     .then(tweet => {
-      const content = renderTweet(tweet)
-      const scripts = ['../listeners.js']
+      let content = renderTweet(tweet)
 
-      res.render('layout',
-                 {user: req.session.user,
-                  content: content,
-                  scripts: scripts
-                 })
+      getComments(tweet.id)
+        .then(comments => {
+          if (!comments.length) content += '<p>No comments</p>'
+          else content += renderComments(comments)
+
+          res.render('layout', {
+            user: req.session.user,
+            content: content,
+            scripts: ['../listeners.js']
+          })
+        })
+        .catch(err => res.status(500).send('Internal Server Error'))
     })
     .catch(err => res.status(404).send('Page Not Found'))
- })
+  })
 
 app.get('/fetch-tweets', (req, res) => {
   getTweets(5, req.query.offset)
@@ -138,7 +150,7 @@ app.post('/add-comment', (req, res) => {
 
   const escaped = xss(req.body.comment)
 
-  addComment(escaped, req.session.user.id, 'translation', 1)
+  addComment(escaped, req.session.user.id, 'translation', req.body.parent)
     .then(() => res.redirect(302, '/'))
     // TODO redirect to parent permalink
     // .then(() => res.redirect(302, '/comments/${parent}')
@@ -195,4 +207,15 @@ function renderTweetActions (tweet) {
 function renderTweet (tweet) {
   const links = renderTweetActions(tweet)
   return `<div id='tweet-${tweet.id}' class='tweet'>${tweet.html}${links}</div>`
+}
+
+function renderComments (comments) {
+  let commentsList = ''
+
+  for (const comment of comments) {
+    const _class = comment.is_translation ? 'comment--translation' : ''
+    commentsList += `<li class='comment ${_class}'>${comment.text}</li>`
+  }
+
+  return `<ul>${commentsList}</ul>`
 }
