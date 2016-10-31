@@ -133,8 +133,9 @@ function renderTweetsListItems (tweets) {
   const addCommentBtn = '<button class="btn btn-link">Add Comment</button>'
 
   for (const tweet of tweets) {
+    const link = `<a href=/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
     tweetsListItems += `<li
-    class='tweet'>${tweet.html}${addTranslationBtn}${addCommentBtn}</li>`
+    class='tweet'>${tweet.html}${addTranslationBtn}${addCommentBtn}${link}</li>`
   }
 
   return tweetsListItems
