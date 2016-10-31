@@ -186,13 +186,13 @@ function renderTweetActions (tweet) {
   const addCommentBtn = `<button name="add-comment" class="btn btn-link"` +
                         `data-id='${tweet.id}' data-type='comment'>` +
                         `Add Comment</button>`
-  const link = `<a href=/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
+  const link = `<a href=/tweet/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
 
-  return `<div id='tweet-links-${tweet.id} class='tweet-links'>` +
+  return `<div id='tweet-links-${tweet.id}' class='tweet-links'>` +
          `${addTranslationBtn}${addCommentBtn}${link}</div>`
 }
 
 function renderTweet (tweet) {
   const links = renderTweetActions(tweet)
-  return `<div class='tweet'>${tweet.html}</div>`
+  return `<div id='tweet-${tweet.id}' class='tweet'>${tweet.html}${links}</div>`
 }
