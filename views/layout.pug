@@ -34,8 +34,14 @@ html
             color: ##{user.textColor};
           }
 
-          h1, a {
+          h1, a, .btn {
             color: ##{user.linkColor};
+          }
+          .btn {
+            border-color: ##{user.linkColor};
+          }
+          .btn:hover {
+            background: ##{user.linkColor};
           }
 
         image(src=user.avatar class='avatar rounded' width='48' height='48')
