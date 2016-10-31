@@ -86,8 +86,10 @@ app.get('/', (req, res) => {
     .then(tweets => {
       res.render('layout', {
         user: req.session.user,
-        content: `<ul id="tweets">${renderTweetsListItems(tweets)}</ul><button
-        id='fetch-more-tweets' class='btn btn-action'>Get more tweets</button>`
+        content: `<ul id='tweets'
+  class='tweets'>${renderTweetsListItems(tweets)}</ul><button
+  id='fetch-more-tweets' class='btn btn-action'>Get more
+  tweets</button>`
       })
     })
     .catch(err => {
@@ -128,7 +130,7 @@ function renderTweetsListItems (tweets) {
   let tweetsListItems
 
   for (const tweet of tweets) {
-    tweetsListItems += `<li>${tweet.html}</li>`
+    tweetsListItems += `<li class='tweet'>${tweet.html}</li>`
   }
 
   return tweetsListItems

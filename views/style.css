@@ -48,3 +48,16 @@ header {
     color: #fff;
     cursor: pointer;
 }
+
+ul.tweets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.twitter-tweet {
+    padding: 1em;
+    background: #fafafa;
+    border-radius: 2px;
+    border: 1px solid #eee;
+}
