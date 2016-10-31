@@ -35,7 +35,7 @@ html
             color: ##{user.textColor};
           }
 
-          a {
+          h1, a {
             color: ##{user.linkColor};
           }
 
@@ -48,6 +48,7 @@ html
       else
         a(href='/login') Login with Twitter
 
-    h1 Help Translate @taravancil's Tweets  
-    main!= content
+    main
+      h1 Help Translate @taravancil's Tweets
+      div!= content
     script(src='listeners.js')

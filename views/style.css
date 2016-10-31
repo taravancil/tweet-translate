@@ -10,6 +10,10 @@ body {
     margin: 0;
 }
 
+main {
+    max-width: 800px;
+}
+
 header {
     position: relative;
 }
