@@ -28,15 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-const commentBox = (type, defaultValue) => {
-  return `<textarea data-type=${type}>${defaultValue}</textarea>`
+const commentForm = (id, type, defaultValue = '') => {
+  const hidden = `<input type='hidden' value=${id} />`
+  const input = `<textarea name='comment' data-type=${type}>${defaultValue}</textarea>`
+  const btn = `<button type='submit' class='btn btn-action'>Submit</button>`
+
+  return `<form action='/add-comment' method='POST'>${input}${btn}${hidden}</form>`
 }
 
 function showCommentBox (id, type) {
   const links = document.getElementById(`tweet-links-${id}`)
   const tweet = document.getElementById(`tweet-${id}`)
-  console.log(tweet)
 
   links.classList.add('hidden')
-  tweet.innerHTML += commentBox(type, 'hi')
+  tweet.innerHTML += commentForm(id, type, '')
 }

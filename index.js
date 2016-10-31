@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
+import bodyParser from 'body-parser'
 import cookieSession from 'cookie-session'
 import crypto from 'crypto'
 import express from 'express'
 import {OAuth} from 'oauth'
-import {addUser, getTweets} from './db'
+import {addUser, getTweets, addComment} from './db'
 
 const app = express()
 
@@ -32,6 +33,8 @@ app.use(cookieSession({
 }))
 
 app.use(express.static('dist'))
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 app.set('view engine', 'pug')
 app.set('views', './views')
 
@@ -60,9 +63,10 @@ app.get('/login-success', (req, res) => {
 
           // Add the user to the database
           addUser(userData.screen_name)
-            .then(() => {
+            .then((id) => {
               // Update the session
               req.session.user = {
+                id: id,
                 screenName: userData.screen_name,
                 avatar: userData.profile_image_url_https,
                 linkColor: userData.profile_link_color,
@@ -106,6 +110,24 @@ app.get('/fetch-tweets', (req, res) => {
       console.error(err)
       res.send('')
     })
+})
+
+app.post('/add-comment', (req, res) => {
+  // check that the user is logged in
+  if (!req.session.user) {
+    res.redirect(302, '/prompt-login')
+  }
+
+  // TODO filter input
+  addComment(req.body.comment, req.session.user.id, 'translation', 1)
+    .then(() => res.redirect(302, '/'))
+    // TODO redirect to parent permalink
+    // .then(() => res.redirect(302, '/comments/${parent}')
+    .catch(err => console.error(err))
+})
+
+app.get('/prompt-login', (req, res) => {
+  res.render('login')
 })
 
 app.get('/login', (req, res) => {
