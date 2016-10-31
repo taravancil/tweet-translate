@@ -59,8 +59,13 @@ ul.tweets {
     padding: 0;
 }
 
+.tweet {
+    margin: 1em 0 3em 0;
+}
+
 .twitter-tweet {
     padding: 1em;
+    margin: 1em 0;
     background: #fafafa;
     border-radius: 2px;
     border: 1px solid #eee;
