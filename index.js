@@ -168,7 +168,7 @@ app.listen(port, () => {
 })
 
 function renderTweetsListItems (tweets) {
-  let tweetsListItems
+  let tweetsListItems = ''
 
   for (const tweet of tweets) {
     const links = renderTweetActions(tweet)
