@@ -31,6 +31,15 @@ export function addUser (screenName) {
   })
 }
 
+export function removeUser (id) {
+  return new Promise((resolve, reject) => {
+    db.run('DELETE FROM users where id = ?', id, (err) => {
+      if (err) reject(err)
+      resolve()
+    })
+  })
+}
+
 export function addComment (text, uid, screenName, type, parent) {
   const isTranslation = type === 'translation'
 
