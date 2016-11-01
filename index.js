@@ -16,6 +16,7 @@ import {
   getScreenNameByID,
   getTranslationAuthorID
 } from './db'
+import {renderTranslation} from './components/translation'
 
 const app = express()
 
@@ -233,24 +234,8 @@ function renderTranslations (translations, user) {
   let translationsList = ''
 
   for (const t of translations) {
-    const author = renderUserLink(t.author_screen_name)
-    const date = new Date(t.timestamp).toLocaleString()
-
-    let deleteForm = ''
-    if (user && (t.uid === user.id || t.screenname === 'taravancil')) {
-      deleteForm = `<form action='/remove-translation' method='POST'><input` +
-                   ` type='hidden' name='id' value='${t.id}' /><button` +
-                   ` type='submit' class='btn btn--link'>Delete</button></form>`
-    }
-
-    translationsList += `<li class='translation'><div
-    class='translation__meta'>${author} ${date}${deleteForm}</div><div
-    class='translation__text'>${t.translation}</div></li>`
+    translationsList += renderTranslation(t, user)
   }
 
   return `<ul class='translations'>${translationsList}</ul>`
-}
-
-function renderUserLink (screenName) {
-  return `<a href='/user/${screenName}>${screenName}'>${screenName}</a>`
 }

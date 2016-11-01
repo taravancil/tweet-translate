@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel *.js -d dist",
+    "build": "babel *.js components/*.js -d dist",
     "start": "node dist/index.js",
     "test": "ava"
   },
