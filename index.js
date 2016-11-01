@@ -11,7 +11,8 @@ import {
   getTweets,
   addComment,
   getComments,
-  getTweetByTweetID
+  getTweetByTweetID,
+  getScreenNameByID
 } from './db'
 
 const app = express()
@@ -219,11 +220,11 @@ function renderComments (comments) {
     const _class = comment.is_translation ? 'comment--translation' : ''
     const date = new Date(comment.timestamp).toLocaleString()
 
-    commentsList += `<li class='comment ${_class}'>by ${author}
-    ${date} <div class='comment__text'>${comment.text}</div></li>`
+    commentsList += `<li class='comment ${_class}'><div class='comment__meta'>${author}
+    ${date}</div><div class='comment__text'>${comment.text}</div></li>`
   }
 
-  return `<ul>${commentsList}</ul>`
+  return `<ul class='comments'>${commentsList}</ul>`
 }
 
 function renderUserLink (screenName) {
