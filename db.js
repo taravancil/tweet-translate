@@ -84,7 +84,7 @@ export function getScreenNameByID (id) {
   })
 }
 
-function getUserIDByScreenName (screenName) {
+export function getUserIDByScreenName (screenName) {
   return new Promise ((resolve, reject) => {
     db.get(`SELECT id FROM users WHERE screen_name = ?`, screenName, (err, row) => {
       if (err) reject(err)
