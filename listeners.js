@@ -30,18 +30,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-const commentForm = (id, type, defaultValue = '') => {
-  const hidden = `<input type='hidden' name='parent' value=${id} />`
-  const input = `<textarea name='comment' data-type=${type}>${defaultValue}</textarea>`
+const commentForm = (parentID, type, defaultValue = '') => {
+  const parent = `<input type='hidden' name='parent' value=${parentID} />`
+  const commentType = `<input type='hidden' name='type' value=${type} />`
+  const input = `<textarea name='comment'>${defaultValue}</textarea>`
   const btn = `<button type='submit' class='btn btn-action'>Submit</button>`
 
-  return `<form action='/add-comment' method='POST'>${input}${btn}${hidden}</form>`
+  return `<form action='/add-comment' method='POST'>${input}${btn}${parent}${commentType}</form>`
 }
 
-function showCommentBox (id, type) {
+function showCommentBox (id, parent, type) {
   const links = document.getElementById(`tweet-links-${id}`)
   const tweet = document.getElementById(`tweet-${id}`)
 
   links.classList.add('hidden')
-  tweet.innerHTML += commentForm(id, type, '')
+  tweet.innerHTML += commentForm(parent, type, '')
 }

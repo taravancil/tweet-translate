@@ -150,11 +150,11 @@ app.post('/add-comment', (req, res) => {
 
   const escaped = xss(req.body.comment)
 
-  addComment(escaped, req.session.user.id, 'translation', req.body.parent)
+  const {id, screenName} = req.session.user
+
+  addComment(escaped, id, screenName, req.body.type, req.body.parent)
     .then(() => res.redirect(302, '/'))
-    // TODO redirect to parent permalink
-    // .then(() => res.redirect(302, '/comments/${parent}')
-    .catch(err => console.error(err))
+    .catch(err => console.error('addComment', err))
 })
 
 app.get('/prompt-login', (req, res) => {
