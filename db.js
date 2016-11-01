@@ -31,13 +31,13 @@ export function addUser (screenName) {
   })
 }
 
-export function addComment (text, uid, type, parent) {
+export function addComment (text, uid, screenName, type, parent) {
   const isTranslation = type === 'translation'
 
   return new Promise((resolve, reject) => {
     db.run(
-      'INSERT INTO comments VALUES (NULL, ?, NULL, ?, ?, ?, NULL)',
-      [uid, text, parent, isTranslation],
+      'INSERT INTO comments VALUES (NULL, ?, ?, NULL, ?, ?, ?, 0)',
+      [uid, screenName, text, parent, isTranslation],
       (err) => {
         if (err) {
           reject(err)
