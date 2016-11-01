@@ -40,13 +40,11 @@ export function removeUser (id) {
   })
 }
 
-export function addComment (text, uid, screenName, type, parent) {
-  const isTranslation = type === 'translation'
-
+export function addTranslation (translation, uid, screenName, type, parent, comment) {
   return new Promise((resolve, reject) => {
     db.run(
-      'INSERT INTO comments VALUES (NULL, ?, ?, NULL, ?, ?, ?, 0)',
-      [uid, screenName, text, parent, isTranslation],
+      'INSERT INTO translations VALUES (NULL, ?, ?, ?, ?, ?, ?, 0)',
+      [uid, screenName, Date.now(), translation, parent, comment],
       (err) => {
         if (err) {
           reject(err)
@@ -57,10 +55,10 @@ export function addComment (text, uid, screenName, type, parent) {
   })
 }
 
-export function removeComment (id) {
+export function removeTranslation (id) {
   return new Promise((resolve, reject) => {
     db.run(
-      'DELETE FROM comments where id = ?', id, (err) => {
+      'DELETE FROM translations where id = ?', id, (err) => {
         if (err) reject(err)
         resolve()
       }
@@ -68,18 +66,18 @@ export function removeComment (id) {
   })
 }
 
-export function getComments (id) {
+export function getTranslations (id) {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM comments where parent = ?', id, (err, rows) => {
+    db.all('SELECT * FROM translations where parent = ?', id, (err, rows) => {
       if (err) reject(err)
       resolve(rows)
     })
   })
 }
 
-export function getCommentAuthorID (id) {
+export function getTranslationAuthorID (id) {
   return new Promise((resolve, reject) => {
-    db.get('SELECT uid FROM comments where id = ?', id, (err, row) => {
+    db.get('SELECT uid FROM translations where id = ?', id, (err, row) => {
       if (err) reject(err)
       resolve(row.uid)
     })

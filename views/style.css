@@ -81,13 +81,14 @@ ul.tweets {
     visibility: hidden;
 }
 
-.comments {
+.translations {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.comment {
+.translation {
+    position: relative;
     background: #ececec;
     list-style: none;
     margin: 1.5em 0;
@@ -95,13 +96,8 @@ ul.tweets {
     max-width: 450px;
 }
 
-.comment--translation {
-    position: relative;
-}
-
-.comment--translation:before {
-    content: 'translation';
-    text-transform: uppercase;
+.translation--admin:before {
+    content: 'Tara\'s translation';
     text-align: center;
     background: rgba(255,255,255,.9);
     color: rgba(0,0,0,.4);
@@ -113,11 +109,11 @@ ul.tweets {
     top: 1em;
 }
 
-.comment__meta {
+.translation__meta {
     font-size: .8em;
 }
 
-.comment__text {
+.translation__text {
     font-style: italic;
     margin: 1em 0 0 0;
 }

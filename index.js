@@ -9,12 +9,12 @@ import {OAuth} from 'oauth'
 import {
   addUser,
   getTweets,
-  addComment,
-  removeComment,
-  getComments,
+  addTranslation,
+  removeTranslation,
+  getTranslations,
   getTweetByTweetID,
   getScreenNameByID,
-  getCommentAuthorID
+  getTranslationAuthorID
 } from './db'
 
 const app = express()
@@ -118,10 +118,10 @@ app.get('/tweet/:tweetID', (req, res) => {
     .then(tweet => {
       let content = renderTweet(tweet)
 
-      getComments(tweet.tweet_id)
-        .then(comments => {
-          if (!comments.length) content += '<p>No comments</p>'
-          else content += renderComments(comments, req.session.user)
+      getTranslations(tweet.tweet_id)
+        .then(translations => {
+          if (!translations.length) content += '<p>No translations</p>'
+          else content += renderTranslations(translations, req.session.user)
 
           res.render('layout', {
             user: req.session.user,
@@ -145,30 +145,30 @@ app.get('/fetch-tweets', (req, res) => {
     })
 })
 
-app.post('/add-comment', (req, res) => {
+app.post('/add-translation', (req, res) => {
   // check that the user is logged in
   if (!req.session.user) {
     res.redirect(302, '/prompt-login')
   }
 
-  const escaped = xss(req.body.comment)
+  const escaped = xss(req.body.translation)
 
   const {id, screenName} = req.session.user
 
-  addComment(escaped, id, screenName, req.body.type, req.body.parent)
+  addTranslation(escaped, id, screenName, req.body.type, req.body.parent)
     .then(() => res.redirect(302, '/'))
-    .catch(err => console.error('addComment', err))
+    .catch(err => console.error(err))
 })
 
-app.post('/remove-comment', (req, res) => {
+app.post('/remove-translation', (req, res) => {
   if (!req.session.user) {
     res.status(401).send('Unathorized')
   }
 
-  getCommentAuthorID(req.body.id)
+  getTranslationAuthorID(req.body.id)
     .then(authorID => {
       if (authorID === req.session.user.id) {
-        removeComment(req.body.id)
+        removeTranslation(req.body.id)
           .then(() => res.redirect('/'))
           .catch(err => res.status(500, 'Internal Server Error'))
       } else {
@@ -213,18 +213,15 @@ function renderTweetsListItems (tweets) {
 }
 
 function renderTweetActions (tweet) {
-  const addTranslationBtn = `<button name="add-comment" class="btn btn--link"` +
+  const addTranslationBtn = `<button name="add-translation" class="btn btn--link"` +
                             `data-id='${tweet.id}'
   data-parent='${tweet.tweet_id}' data-type='translation'>` +
-                            `Suggest Translation</button>`
-  const addCommentBtn = `<button name="add-comment" class="btn btn--link"` +
-                        `data-id='${tweet.id}'
-  data-parent=${tweet.tweet_id} data-type='comment'>` +
-                        `Add Comment</button>`
-  const link = `<a href=/tweet/${tweet.tweet_id} class='btn btn--link'>Comments</a>`
+                            `Add Translation</button>`
+  const link = `<a href=/tweet/${tweet.tweet_id} class='btn
+  btn--link'>Translations</a>`
 
   return `<div id='tweet-links-${tweet.id}' class='tweet-links'>` +
-         `${addTranslationBtn}${addCommentBtn}${link}</div>`
+         `${addTranslationBtn}${link}</div>`
 }
 
 function renderTweet (tweet) {
@@ -232,27 +229,26 @@ function renderTweet (tweet) {
   return `<div id='tweet-${tweet.id}' class='tweet'>${tweet.html}${links}</div>`
 }
 
-function renderComments (comments, user) {
-  let commentsList = ''
+function renderTranslations (translations, user) {
+  let translationsList = ''
 
-  for (const comment of comments) {
-    const author = renderUserLink(comment.author_screen_name)
-    const _class = comment.is_translation ? 'comment--translation' : ''
-    const date = new Date(comment.timestamp).toLocaleString()
+  for (const t of translations) {
+    const author = renderUserLink(t.author_screen_name)
+    const date = new Date(t.timestamp).toLocaleString()
 
     let deleteForm = ''
-    if (user && (comment.uid === user.id || user.screenname === 'taravancil')) {
-      deleteForm = `<form action='/remove-comment' method='POST'><input` +
-                   ` type='hidden' name='id' value='${comment.id}' /><button` +
+    if (user && (t.uid === user.id || t.screenname === 'taravancil')) {
+      deleteForm = `<form action='/remove-translation' method='POST'><input` +
+                   ` type='hidden' name='id' value='${t.id}' /><button` +
                    ` type='submit' class='btn btn--link'>Delete</button></form>`
     }
 
-    commentsList += `<li class='comment ${_class}'><div
-    class='comment__meta'>${author} ${date}${deleteForm}</div><div
-    class='comment__text'>${comment.text}</div></li>`
+    translationsList += `<li class='translation'><div
+    class='translation__meta'>${author} ${date}${deleteForm}</div><div
+    class='translation__text'>${t.translation}</div></li>`
   }
 
-  return `<ul class='comments'>${commentsList}</ul>`
+  return `<ul class='translations'>${translationsList}</ul>`
 }
 
 function renderUserLink (screenName) {
