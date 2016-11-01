@@ -106,7 +106,7 @@ app.get('/', (req, res) => {
   class='tweets'>${renderTweetsListItems(tweets)}</ul><button
   id='fetch-more-tweets' class='btn btn-action'>Get more
   tweets</button>`,
-        scripts: ['listeners.js']
+        scripts: ['main.js']
       })
     })
     .catch(err => {
@@ -127,7 +127,7 @@ app.get('/tweet/:tweetID', (req, res) => {
           res.render('layout', {
             user: req.session.user,
             content: content,
-            scripts: ['../listeners.js']
+            scripts: ['../tweet.js']
           })
         })
         .catch(err => res.status(500).send('Internal Server Error'))
