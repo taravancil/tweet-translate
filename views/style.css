@@ -43,7 +43,7 @@ header {
     color: inherit;
 }
 
-.btn-link {
+.btn--link {
     border: none;
     text-decoration: underline;
 }

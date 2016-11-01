@@ -213,15 +213,15 @@ function renderTweetsListItems (tweets) {
 }
 
 function renderTweetActions (tweet) {
-  const addTranslationBtn = `<button name="add-comment" class="btn btn-link"` +
+  const addTranslationBtn = `<button name="add-comment" class="btn btn--link"` +
                             `data-id='${tweet.id}'
   data-parent='${tweet.tweet_id}' data-type='translation'>` +
                             `Suggest Translation</button>`
-  const addCommentBtn = `<button name="add-comment" class="btn btn-link"` +
+  const addCommentBtn = `<button name="add-comment" class="btn btn--link"` +
                         `data-id='${tweet.id}'
   data-parent=${tweet.tweet_id} data-type='comment'>` +
                         `Add Comment</button>`
-  const link = `<a href=/tweet/${tweet.tweet_id} class='btn btn-link'>Comments</a>`
+  const link = `<a href=/tweet/${tweet.tweet_id} class='btn btn--link'>Comments</a>`
 
   return `<div id='tweet-links-${tweet.id}' class='tweet-links'>` +
          `${addTranslationBtn}${addCommentBtn}${link}</div>`
