@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
   addCommentBtns.forEach(btn => {
     btn.onclick = (e) => {
       e.preventDefault()
-      showCommentBox(e.target.dataset.id, e.target.dataset.type)
+      showCommentBox(e.target.dataset.id,
+                     e.target.dataset.parent,
+                     e.target.dataset.type)
     }
   })
 
