@@ -10,9 +10,11 @@ import {
   addUser,
   getTweets,
   addComment,
+  removeComment,
   getComments,
   getTweetByTweetID,
-  getScreenNameByID
+  getScreenNameByID,
+  getCommentAuthorID
 } from './db'
 
 const app = express()
@@ -158,6 +160,24 @@ app.post('/add-comment', (req, res) => {
     .catch(err => console.error('addComment', err))
 })
 
+app.post('/remove-comment', (req, res) => {
+  if (!req.session.user) {
+    res.status(401).send('Unathorized')
+  }
+
+  getCommentAuthorID(req.body.id)
+    .then(authorID => {
+      if (authorID === req.session.user.id) {
+        removeComment(req.body.id)
+          .then(() => res.redirect('/'))
+          .catch(err => res.status(500, 'Internal Server Error'))
+      } else {
+        res.status(401).send('Unauthorized')
+      }
+    })
+    .catch(err => res.status(500, 'Internal Server Error'))
+})
+
 app.get('/prompt-login', (req, res) => {
   res.render('login')
 })
@@ -212,7 +232,7 @@ function renderTweet (tweet) {
   return `<div id='tweet-${tweet.id}' class='tweet'>${tweet.html}${links}</div>`
 }
 
-function renderComments (comments) {
+function renderComments (comments, user) {
   let commentsList = ''
 
   for (const comment of comments) {
@@ -220,8 +240,16 @@ function renderComments (comments) {
     const _class = comment.is_translation ? 'comment--translation' : ''
     const date = new Date(comment.timestamp).toLocaleString()
 
-    commentsList += `<li class='comment ${_class}'><div class='comment__meta'>${author}
-    ${date}</div><div class='comment__text'>${comment.text}</div></li>`
+    let deleteForm = ''
+    if (user && (comment.uid === user.id || user.screenname === 'taravancil')) {
+      deleteForm = `<form action='/remove-comment' method='POST'><input` +
+                   ` type='hidden' name='id' value='${comment.id}' /><button` +
+                   ` type='submit' class='btn btn--link'>Delete</button></form>`
+    }
+
+    commentsList += `<li class='comment ${_class}'><div
+    class='comment__meta'>${author} ${date}${deleteForm}</div><div
+    class='comment__text'>${comment.text}</div></li>`
   }
 
   return `<ul class='comments'>${commentsList}</ul>`

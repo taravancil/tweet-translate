@@ -57,11 +57,31 @@ export function addComment (text, uid, screenName, type, parent) {
   })
 }
 
+export function removeComment (id) {
+  return new Promise((resolve, reject) => {
+    db.run(
+      'DELETE FROM comments where id = ?', id, (err) => {
+        if (err) reject(err)
+        resolve()
+      }
+    )
+  })
+}
+
 export function getComments (id) {
   return new Promise((resolve, reject) => {
     db.all('SELECT * FROM comments where parent = ?', id, (err, rows) => {
       if (err) reject(err)
       resolve(rows)
+    })
+  })
+}
+
+export function getCommentAuthorID (id) {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT uid FROM comments where id = ?', id, (err, row) => {
+      if (err) reject(err)
+      resolve(row.uid)
     })
   })
 }
