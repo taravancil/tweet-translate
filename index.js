@@ -213,9 +213,17 @@ function renderComments (comments) {
   let commentsList = ''
 
   for (const comment of comments) {
+    const author = renderUserLink(comment.author_screen_name)
     const _class = comment.is_translation ? 'comment--translation' : ''
-    commentsList += `<li class='comment ${_class}'>${comment.text}</li>`
+    const date = new Date(comment.timestamp).toLocaleString()
+
+    commentsList += `<li class='comment ${_class}'>by ${author}
+    ${date} <div class='comment__text'>${comment.text}</div></li>`
   }
 
   return `<ul>${commentsList}</ul>`
+}
+
+function renderUserLink (screenName) {
+  return `<a href='/user/${screenName}>${screenName}'>${screenName}</a>`
 }
