@@ -118,10 +118,10 @@ app.get('/tweet/:tweetID', (req, res) => {
     .then(tweet => {
       let content = renderTweet(tweet)
 
-      getComments(tweet.id)
+      getComments(tweet.tweet_id)
         .then(comments => {
           if (!comments.length) content += '<p>No comments</p>'
-          else content += renderComments(comments)
+          else content += renderComments(comments, req.session.user)
 
           res.render('layout', {
             user: req.session.user,
