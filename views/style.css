@@ -113,7 +113,68 @@ ul.tweets {
     font-size: .8em;
 }
 
+.translation form {
+    display: inline-block;
+    position: absolute;
+    right: 1em;
+}
+
 .translation__text {
     font-style: italic;
     margin: 1em 0 0 0;
 }
+
+.arrow {
+    width: 0;
+    height: 0;
+}
+
+.arrow--up {
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid rgba(0,0,0,.4);
+}
+
+.arrow--down{
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid rgba(0,0,0,.4);
+}
+
+.votes {
+    float: right;
+}
+
+.votes .count {
+    font-weight: bold;
+    color: rgba(0, 0, 0, .5);
+}
+
+.vote {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.vote i {
+    display: block;
+    text-align: center;
+}
+
+.vote button {
+    display: block;
+    border-radius: 2px;
+    padding: .5em .3em;
+}
+
+.vote button:hover {
+    cursor: pointer;
+    background: rgba(0,0,0,.1);
+}
+
+/*
+.vote button:disabled:hover {
+    cursor: default;
+    background: none;
+}
+*/

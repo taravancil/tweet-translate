@@ -43,7 +43,7 @@ export function removeUser (id) {
 export function addTranslation (translation, uid, screenName, type, parent, comment) {
   return new Promise((resolve, reject) => {
     db.run(
-      'INSERT INTO translations VALUES (NULL, ?, ?, ?, ?, ?, ?, 0)',
+      'INSERT INTO translations VALUES (NULL, ?, ?, ?, ?, ?, ?)',
       [uid, screenName, Date.now(), translation, parent, comment],
       (err) => {
         if (err) {
@@ -80,6 +80,25 @@ export function getTranslationAuthorID (id) {
     db.get('SELECT uid FROM translations where id = ?', id, (err, row) => {
       if (err) reject(err)
       resolve(row.uid)
+    })
+  })
+}
+
+export function addVote (translationID, uid, delta) {
+  return new Promise((resolve, reject) => {
+    db.run('INSERT INTO votes VALUES (?, ?, ?)', [translationID, uid, delta],
+           (err) => {
+             if (err) reject(err)
+             resolve()
+           })
+  })
+}
+
+export function getVoteCount (id) {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT SUM(delta) FROM votes WHERE translation_id = ?', id, (err, row) => {
+      if (err) reject(err)
+      resolve(row['SUM(delta)'])
     })
   })
 }

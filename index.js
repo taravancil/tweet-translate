@@ -11,10 +11,13 @@ import {
   getTweets,
   addTranslation,
   removeTranslation,
+  getRecentTranslations,
   getTranslations,
   getTweetByTweetID,
   getScreenNameByID,
-  getTranslationAuthorID
+  getTranslationAuthorID,
+  addVote,
+  getVoteCount
 } from './db'
 import {renderTranslation} from './components/translation'
 
@@ -188,6 +191,25 @@ app.get('/login', (req, res) => {
     oAuthTokenSecret = oAuthTokenSecret
     res.redirect(302, `${OAUTH_API}/authenticate?oauth_token=${oAuthToken}`)
   })
+})
+
+app.post('/vote', (req, res) => {
+  if (!req.session.user) {
+    res.status(401).send('Unauthorized')
+    return
+  }
+
+  const {id, delta} = req.body
+
+  // Only allow vote count delta to have a magnitude of 1
+  if (Math.abs(delta) !== 1) {
+    res.status(400).send('Invalid Request')
+    return
+  }
+
+  addVote(id, req.session.user.id, delta)
+    .then(() => {})
+    .catch(err => console.error(err))
 })
 
 app.get('/logout', (req, res) => {
