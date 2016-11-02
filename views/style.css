@@ -77,7 +77,7 @@ ul.tweets {
 }
 
 .hidden {
-    visibility: hidden;
+    display: none;
 }
 
 .translations {
