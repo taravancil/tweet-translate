@@ -68,10 +68,20 @@ export function removeTranslation (id) {
 
 export function getTranslations (id) {
   return new Promise((resolve, reject) => {
-    db.all('SELECT * FROM translations where parent = ?', id, (err, rows) => {
+    db.all('SELECT * FROM translations where parent = ? ORDER BY timestamp DESC', id, (err, rows) => {
       if (err) reject(err)
       resolve(rows)
     })
+  })
+}
+
+export function getRecentTranslations () {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT * FROM translations ORDER BY timestamp DESC LIMIT 10',
+           (err, rows) => {
+             if (err) reject(err)
+             resolve(rows)
+           })
   })
 }
 
