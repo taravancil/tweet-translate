@@ -82,6 +82,9 @@ ul.tweets {
 
 .translations {
     list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     margin: 0;
     padding: 0;
 }
@@ -90,9 +93,9 @@ ul.tweets {
     position: relative;
     background: #ececec;
     list-style: none;
-    margin: 1.5em 0;
+    margin: .5em;
     padding: .75em 1em;
-    max-width: 450px;
+    width: 350px;
 }
 
 .translation--admin:before {
