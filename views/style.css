@@ -172,9 +172,8 @@ ul.tweets {
     background: rgba(0,0,0,.1);
 }
 
-/*
-.vote button:disabled:hover {
+
+.vote button[disabled]:hover {
     cursor: default;
     background: none;
 }
-*/
