@@ -178,3 +178,10 @@ ul.tweets {
     cursor: default;
     background: none;
 }
+
+form textarea {
+    display: block;
+    width: 300px;
+    height: 100px;
+    margin-bottom: 1em;
+}
