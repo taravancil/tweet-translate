@@ -114,9 +114,8 @@ ul.tweets {
 }
 
 .translation form {
+    margin: 0 1em;
     display: inline-block;
-    position: absolute;
-    right: 1em;
 }
 
 .translation__text {
