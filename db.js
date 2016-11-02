@@ -94,6 +94,15 @@ export function getTranslationAuthorID (id) {
   })
 }
 
+export function getTranslationCount (id) {
+  return new Promise((resolve, reject) => {
+    db.all('SELECT FROM translations where id = ?', id, (err, rows) => {
+      if (err) reject(err)
+      resolve(rows.length)
+    })
+  })
+}
+
 export function addVote (translationID, uid, delta) {
   return new Promise((resolve, reject) => {
     db.run('INSERT INTO votes VALUES (?, ?, ?)', [translationID, uid, delta],
