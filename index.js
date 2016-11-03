@@ -16,10 +16,12 @@ import {
   getTweetByTweetID,
   getScreenNameByID,
   getTranslationAuthorID,
+  getTranslationCount,
   addVote,
   getVoteCount
 } from './db'
 import {renderTranslation} from './components/translation'
+import {renderTweet} from './components/tweet'
 
 const app = express()
 
@@ -103,11 +105,17 @@ app.get('/login-success', (req, res) => {
 app.get('/', async (req, res) => {
   try {
     const tweets = await getTweets(5, 0)
-    const tweetListItems = await renderTweetsListItems(tweets, req.session.user)
 
-    const content = `<ul id='tweets' class='tweets'>${tweetListItems}</ul>` +
-          `<button id='fetch-more-tweets' class='btn btn-action'>` +
-          `Get more tweets</button>`
+    let tweetEls = ''
+
+    for (const tweet of tweets) {
+      const translationCount = await getTranslationCount(tweet.id)
+      tweetEls += renderTweet(tweet, req.session.user, translationCount)
+    }
+
+    const content = `<div id='tweets' class='tweets'>${tweetEls}</div>` +
+                    `<button id='fetch-more-tweets' class='btn btn-action'>` +
+                    `Get more tweets</button>`
 
     res.render('layout', {
       user: req.session.user,
@@ -249,41 +257,13 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
 
-function renderTweetsListItems (tweets) {
-  let tweetsListItems = ''
-
-  for (const tweet of tweets) {
-    const links = renderTweetActions(tweet)
-    tweetsListItems += `<li id='tweet-${tweet.id}' class='tweet'>${tweet.html}` +
-                       `${links}</li>`
-  }
-
-  return tweetsListItems
-}
-
-function renderTweetActions (tweet) {
-  const addTranslationBtn = `<button name="add-translation" class="btn btn--link"` +
-                            `data-id='${tweet.id}'
-  data-parent='${tweet.tweet_id}' data-type='translation'>` +
-                            `Add Translation</button>`
-  const link = `<a href=/tweet/${tweet.tweet_id} class='btn
-  btn--link'>Translations</a>`
-
-  return `<div id='tweet-links-${tweet.id}' class='tweet-links'>` +
-         `${addTranslationBtn}${link}</div>`
-}
-
-function renderTweet (tweet) {
-  const links = renderTweetActions(tweet)
-  return `<div id='tweet-${tweet.id}' class='tweet'>${tweet.html}${links}</div>`
-}
-
-function renderTranslations (translations, user) {
-  let translationsList = ''
+async function renderTranslations (translations, user) {
+  let els = ''
 
   for (const t of translations) {
-    translationsList += renderTranslation(t, user)
+    const voteCounts = await getVoteCount(t.id)
+    els += await renderTranslation(t, voteCounts, user)
   }
 
-  return `<ul class='translations'>${translationsList}</ul>`
+  return els
 }
