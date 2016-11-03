@@ -100,52 +100,78 @@ app.get('/login-success', (req, res) => {
   })
 })
 
-app.get('/', (req, res) => {
-  getTweets(5, 0)
-    .then(tweets => {
-      res.render('layout', {
-        user: req.session.user,
-        content: `<ul id='tweets'
-  class='tweets'>${renderTweetsListItems(tweets)}</ul><button
-  id='fetch-more-tweets' class='btn btn-action'>Get more
-  tweets</button>`,
-        scripts: ['main.js']
-      })
+app.get('/', async (req, res) => {
+  try {
+    const tweets = await getTweets(5, 0)
+    const tweetListItems = await renderTweetsListItems(tweets, req.session.user)
+
+    const content = `<ul id='tweets' class='tweets'>${tweetListItems}</ul>` +
+          `<button id='fetch-more-tweets' class='btn btn-action'>` +
+          `Get more tweets</button>`
+
+    res.render('layout', {
+      user: req.session.user,
+      content: content,
+      scripts: ['client/home.js', 'client/tweet.js']
     })
-    .catch(err => {
-      console.error(err)
-    })
+  } catch (err) {
+    res.status(500).send('Internal Server Error')
+  }
 })
 
-app.get('/tweet/:tweetID', (req, res) => {
-  getTweetByTweetID(req.params.tweetID)
-    .then(tweet => {
-      let content = renderTweet(tweet)
+app.get('/translations', async (req, res) => {
+  try {
+    const {user} = req.session.user
+    const translations = await getRecentTranslations()
+    const translationEls = await renderTranslations(translations, user)
+    const content = `<h2>Recent Translations</h2><ul id='translations' class='translations'>${translationEls}</ul>`
 
-      getTranslations(tweet.tweet_id)
-        .then(translations => {
-          if (!translations.length) content += '<p>No translations</p>'
-          else content += renderTranslations(translations, req.session.user)
+    res.render('layout', {user: user, content: content})
+  } catch (err) {
+    res.status(500).send('Internal Server Error'))
+  }
+})
 
-          res.render('layout', {
-            user: req.session.user,
-            content: content,
-            scripts: ['../tweet.js']
-          })
-        })
-        .catch(err => res.status(500).send('Internal Server Error'))
+app.get('/tweet/:tweetID', async (req, res) => {
+  try {
+    // check that the tweet exists
+    const tweet = await getTweetByTweetID(req.params.tweetID)
+    if (!tweet) {
+      res.status(404).send('Page Not Found')
+      return
+    }
+
+    const {user} = req.session
+    const translations = await getTranslations(tweet.tweet_id)
+    const translationsCount = translations.length || 0
+
+    let content = await renderTweet(tweet, user, translationsCount)
+
+    if (translationsCount < 1) {
+      content += '<ul class="translations"><p>No translations</p></ul>'
+    } else {
+      const translationEls = await renderTranslations(translations, user)
+      content += `<h3>Translations</h3><ul class='translations'>${translationEls}</ul>`
+    }
+
+    res.render('layout', {
+      user: user,
+      content: content,
+      scripts: ['../client/tweet.js', '../client/translations.js']
     })
-    .catch(err => res.status(404).send('Page Not Found'))
-  })
+  } catch (err) {
+    res.status(500).send('Internal Server Error')
+  }
+})
 
 app.get('/fetch-tweets', (req, res) => {
   getTweets(5, req.query.offset)
     .then(tweets => {
-      res.send(renderTweetsListItems(tweets))
+      res.send(renderTweetsListItems(tweets, req.session.user))
     })
     .catch(err => {
       console.error(err)
-      res.send('')
+      res.status(500).send('Internal Server Error')
     })
 })
 
