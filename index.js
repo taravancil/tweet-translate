@@ -256,14 +256,3 @@ const port = 3000
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
-
-async function renderTranslations (translations, user) {
-  let els = ''
-
-  for (const t of translations) {
-    const voteCounts = await getVoteCount(t.id)
-    els += await renderTranslation(t, voteCounts, user)
-  }
-
-  return els
-}
