@@ -105,13 +105,7 @@ app.get('/login-success', (req, res) => {
 app.get('/', async (req, res) => {
   try {
     const tweets = await getTweets(5, 0)
-
-    let tweetEls = ''
-
-    for (const tweet of tweets) {
-      const translationCount = await getTranslationCount(tweet.id)
-      tweetEls += renderTweet(tweet, req.session.user, translationCount)
-    }
+    const tweetEls = await renderTweets(tweets, req.session.user, true)
 
     const content = `<div id='tweets' class='tweets'>${tweetEls}</div>` +
                     `<button id='fetch-more-tweets' class='btn btn-action'>` +
@@ -140,12 +134,18 @@ app.get('/tweet/:tweetID', async (req, res) => {
     const translations = await getTranslations(tweet.tweet_id)
     const translationsCount = translations.length || 0
 
-    let content = await renderTweet(tweet, user, translationsCount)
+    let content = renderTweet(tweet, user, translationsCount, false)
 
     if (translationsCount < 1) {
       content += '<ul class="translations"><p>No translations</p></ul>'
     } else {
-      const translationEls = await renderTranslations(translations, user)
+      let translationEls = ''
+
+      for (const t of translations) {
+        const voteCounts = await getVoteCount(t.id)
+        translationEls += renderTranslation(t, voteCounts, user)
+      }
+
       content += `<h3>Translations</h3><ul class='translations'>${translationEls}</ul>`
     }
 
@@ -243,3 +243,13 @@ const port = 3000
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
+
+async function renderTweets (tweets, user, showLink) {
+  let els = ''
+
+  for (const tweet of tweets) {
+    const translationCount = await getTranslationCount(tweet.tweet_id)
+    els += renderTweet(tweet, user, translationCount, showLink)
+  }
+  return els
+}
