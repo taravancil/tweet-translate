@@ -40,7 +40,7 @@ export function removeUser (id) {
   })
 }
 
-export function addTranslation (translation, uid, screenName, type, parent, comment) {
+export function addTranslation (uid, screenName, translation, comment, parent) {
   return new Promise((resolve, reject) => {
     db.run(
       'INSERT INTO translations VALUES (NULL, ?, ?, ?, ?, ?, ?)',
