@@ -175,31 +175,42 @@ app.post('/add-translation', (req, res) => {
     res.redirect(302, '/prompt-login')
   }
 
-  const escaped = xss(req.body.translation)
-
-  const {id, screenName} = req.session.user
-
-  addTranslation(escaped, id, screenName, req.body.type, req.body.parent)
-    .then(() => res.redirect(302, '/'))
-    .catch(err => console.error(err))
-})
-
-app.post('/remove-translation', (req, res) => {
-  if (!req.session.user) {
-    res.status(401).send('Unathorized')
+  if (!req.body.translation) {
+    res.status(400).send('Bad Request')
+    return
   }
 
-  getTranslationAuthorID(req.body.id)
-    .then(authorID => {
-      if (authorID === req.session.user.id) {
-        removeTranslation(req.body.id)
-          .then(() => res.redirect('/'))
-          .catch(err => res.status(500, 'Internal Server Error'))
-      } else {
-        res.status(401).send('Unauthorized')
-      }
-    })
-    .catch(err => res.status(500, 'Internal Server Error'))
+  const escapedTranslation = xss(req.body.translation)
+  const escapedComment = xss(req.body.comment)
+  const {id, screenName} = req.session.user
+
+  try {
+    addTranslation(id, screenName, escapedTranslation, escapedComment, req.body.parent)
+  } catch (err) {
+    res.status(500).send('Internal Server Error')
+  }
+})
+
+app.post('/remove-translation', async (req, res) => {
+  if (!req.session.user) {
+    res.status(401).send('Unauthorized')
+    return
+  }
+
+  try {
+    const authorID = await getTranslationAuthorID(req.body.id)
+
+    // check that the user is authorized to delete this translation
+    if (authorID !== req.session.user.id) {
+      res.status(401).send('Unauthorized')
+      return
+    }
+
+    removeTranslation(req.body.id)
+    res.redirect(302, `/tweet/${req.body.parent}`)
+  } catch (err) {
+    res.status(500).send('Internal Server Error')
+  }
 })
 
 app.get('/prompt-login', (req, res) => {
