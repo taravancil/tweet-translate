@@ -50,6 +50,8 @@ html
         span.username  #{user.screenName}
         span.links
           a(href='/logout' class='logout') Logout
+        input(type='hidden' id='uid' value=user.id)
+        input(type='hidden' id='screenName' value=user.screenName)
 
       else
         a(href='/login') Login with Twitter
