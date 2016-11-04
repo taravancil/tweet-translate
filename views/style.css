@@ -68,7 +68,6 @@ ul.tweets {
     padding: 1em;
     margin: 1em 0;
     background: #fafafa;
-    border-radius: 2px;
     border: 1px solid #eee;
 }
 
@@ -93,9 +92,10 @@ ul.tweets {
     position: relative;
     background: #ececec;
     list-style: none;
-    margin: .5em;
+    margin: 0 1em 1em 0;
     padding: .75em 1em;
     width: 350px;
+    display: block;
 }
 
 .translation--admin:before {
@@ -113,16 +113,21 @@ ul.tweets {
 
 .translation__meta {
     font-size: .8em;
+    margin-bottom: 1em;
 }
 
 .translation form {
-    margin: 0 1em;
+    float: right;
     display: inline-block;
 }
 
 .translation__text {
+    background: #fff;
     font-style: italic;
+    font-size: .9em;
     margin: 1em 0 0 0;
+    padding: .5em .75em;
+    min-height: 65px;
 }
 
 .arrow {
@@ -142,8 +147,10 @@ ul.tweets {
     border-top: 7px solid rgba(0,0,0,.4);
 }
 
+
 .votes {
     float: right;
+    font-size: .8em;
 }
 
 .votes .count {
@@ -181,7 +188,8 @@ ul.tweets {
 
 form textarea {
     display: block;
-    width: 300px;
-    height: 100px;
+    width: 375px;
+    height: 75px;
     margin-bottom: 1em;
+    font-size: 1em;
 }
