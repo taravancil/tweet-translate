@@ -239,8 +239,6 @@ app.post('/vote', (req, res) => {
   }
 
   addVote(id, req.session.user.id, delta)
-    .then(() => {})
-    .catch(err => console.error(err))
 })
 
 app.get('/logout', (req, res) => {
