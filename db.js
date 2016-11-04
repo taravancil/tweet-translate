@@ -94,11 +94,11 @@ export function getTranslationAuthorID (id) {
   })
 }
 
-export function getTranslationCount (id) {
+export function getTranslationCount (tweetID) {
   return new Promise((resolve, reject) => {
-    db.all('SELECT FROM translations where id = ?', id, (err, rows) => {
+    db.all('SELECT * FROM translations where parent = ?', tweetID, (err, rows) => {
       if (err) reject(err)
-      resolve(rows.length)
+      rows === undefined ? resolve(0) : resolve(rows.length)
     })
   })
 }
