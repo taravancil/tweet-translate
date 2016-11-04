@@ -155,19 +155,18 @@ app.get('/tweet/:tweetID', async (req, res) => {
       scripts: ['../client/tweet.js', '../client/translations.js']
     })
   } catch (err) {
+    console.error(err)
     res.status(500).send('Internal Server Error')
   }
 })
 
-app.get('/fetch-tweets', (req, res) => {
-  getTweets(5, req.query.offset)
-    .then(tweets => {
-      res.send(renderTweetsListItems(tweets, req.session.user))
-    })
-    .catch(err => {
-      console.error(err)
-      res.status(500).send('Internal Server Error')
-    })
+app.get('/fetch-tweets', async (req, res) => {
+  try {
+    const tweets = await getTweets(5, req.query.offset)
+    res.send(await renderTweets(tweets, req.session.user, true))
+  } catch (err) {
+    res.status(500).send('Internal ServerE')
+  }
 })
 
 app.post('/add-translation', (req, res) => {
