@@ -127,19 +127,6 @@ app.get('/', async (req, res) => {
   }
 })
 
-app.get('/translations', async (req, res) => {
-  try {
-    const {user} = req.session.user
-    const translations = await getRecentTranslations()
-    const translationEls = await renderTranslations(translations, user)
-    const content = `<h2>Recent Translations</h2><ul id='translations' class='translations'>${translationEls}</ul>`
-
-    res.render('layout', {user: user, content: content})
-  } catch (err) {
-    res.status(500).send('Internal Server Error'))
-  }
-})
-
 app.get('/tweet/:tweetID', async (req, res) => {
   try {
     // check that the tweet exists
