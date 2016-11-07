@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "start": "node dist/index.js",
+    "start": "gulp build && node dist/index.js",
     "test": "ava"
   },
   "author": "Tara Vancil <tbvanc@gmail.com>",
