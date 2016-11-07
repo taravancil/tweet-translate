@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel *.js components/*.js -d dist --ignore test.js",
+    "build": "gulp build",
     "start": "node dist/index.js",
     "test": "ava"
   },
@@ -28,6 +28,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-browserify": "^0.5.1",
     "gulp-clean-css": "^2.0.13",
+    "gulp-uglify": "^2.0.0",
     "pump": "^1.0.1"
   }
 }

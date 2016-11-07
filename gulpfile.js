@@ -19,6 +19,7 @@ gulp.task('bundle-js', ['transpile-js'], (cb) => {
   pump([
     gulp.src(clientScripts),
     browserify(),
+    uglify(),
     gulp.dest('dist')
   ])
 })
