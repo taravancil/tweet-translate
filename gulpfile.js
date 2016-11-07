@@ -28,7 +28,7 @@ gulp.task('build-css', () => {
   pump([
     gulp.src('css/*.css'),
     cleanCSS(),
-    gulp.dest('dist')
+    gulp.dest('dist/css')
   ])
 })
 
