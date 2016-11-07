@@ -201,7 +201,7 @@ app.get('/fetch-tweets', async (req, res) => {
   }
 })
 
-app.post('/add-translation', (req, res) => {
+app.post('/add-translation', async (req, res) => {
   // check that the user is logged in
   if (!req.session.user) {
     res.redirect(302, '/prompt-login')
@@ -217,7 +217,9 @@ app.post('/add-translation', (req, res) => {
   const {id, screenName} = req.session.user
 
   try {
-    addTranslation(id, screenName, escapedTranslation, escapedComment, req.body.parent)
+    await addTranslation(id, screenName, escapedTranslation, escapedComment, req.body.parent)
+    res.redirect(302, `/tweet/${req.body.parent}`)
+
   } catch (err) {
     res.status(500).send('Internal Server Error')
   }
