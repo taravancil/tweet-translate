@@ -31,6 +31,9 @@ const API_KEY = process.env.TWITTER_API_KEY
 const API_SECRET = process.env.TWITTER_API_SECRET
 const TWITTER_API = 'https://api.twitter.com'
 const OAUTH_API = `${TWITTER_API}/oauth`
+const OAUTH_CALLBACK_URL = process.env.NODE_ENV === 'production' ?
+      'https://tweets.taravancil.com/login-success' :
+      'http://localhost:3000/login-success'
 
 const oauth = new OAuth(
   `${OAUTH_API}/request_token`,
@@ -38,7 +41,7 @@ const oauth = new OAuth(
   API_KEY,
   API_SECRET,
   '1.0A',
-  'http://localhost:3000/login-success',
+  OAUTH_CALLBACK_URL,
   'HMAC-SHA1'
 )
 
