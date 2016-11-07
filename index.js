@@ -114,7 +114,7 @@ app.get('/', async (req, res) => {
     res.render('layout', {
       user: req.session.user,
       content: content,
-      scripts: ['client/home.js', 'client/tweet.js']
+      scripts: ['home.js', 'tweet.js']
     })
   } catch (err) {
     res.status(500).send('Internal Server Error')
@@ -152,7 +152,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
     res.render('layout', {
       user: user,
       content: content,
-      scripts: ['../client/tweet.js', '../client/translations.js']
+      scripts: ['../tweet.js', '../translations.js']
     })
   } catch (err) {
     console.error(err)
