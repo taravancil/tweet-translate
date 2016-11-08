@@ -16,5 +16,5 @@ npm install
 Run it
 
 ```
-npm run build
+npm run build && npm start
 ```
