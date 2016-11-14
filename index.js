@@ -155,7 +155,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
     const translations = await getTranslations(tweet.tweetId)
     const translationsCount = translations.length || 0
 
-    let content = renderTweet(tweet, user, translationsCount, false)
+    let content = renderTweet(tweet, user, false)
 
     if (translationsCount < 1) {
       content += '<ul class="translations"><p>No translations</p></ul>'
@@ -306,8 +306,7 @@ async function renderTweets (tweets, user, showLink) {
   let els = ''
 
   for (const tweet of tweets) {
-    const translationCount = await getTranslationCount(tweet.tweetId)
-    els += renderTweet(tweet, user, translationCount, showLink)
+    els += renderTweet(tweet, user, showLink)
   }
   return els
 }
