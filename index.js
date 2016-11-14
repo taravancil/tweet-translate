@@ -218,7 +218,6 @@ app.post('/add-translation', async (req, res) => {
 
   try {
     await addTranslation(id, screenName, escapedTranslation, escapedComment, req.body.parent)
-    res.redirect(302, `/tweet/${req.body.parent}`)
 
   } catch (err) {
     res.status(500).send('Internal Server Error')
