@@ -122,12 +122,13 @@ ul.tweets {
 }
 
 .translation__text {
+    display: inline-block;
     background: #fff;
     font-style: italic;
-    font-size: .9em;
-    margin: 1em 0 0 0;
-    padding: .5em .75em;
+    font-size: .8em;
+    padding: .75em;
     min-height: 65px;
+    width: 285px;
 }
 
 .arrow {
@@ -149,6 +150,7 @@ ul.tweets {
 
 
 .votes {
+    display: inline-block;
     float: right;
     font-size: .8em;
 }
