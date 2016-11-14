@@ -13,6 +13,15 @@ Install the dependencies
 npm install
 ```
 
+If you haven't already, you'll need to [install
+MongoDB](https://docs.mongodb.com/v3.2/administration/install-community/).
+
+Once you've installed it, start up a mongo server with `mongod` on port `27017`.
+
+```
+mongod --dbpath=<dbdatapath> --port 27017
+```
+
 Run it
 
 ```
