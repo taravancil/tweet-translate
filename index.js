@@ -136,7 +136,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
     }
 
     const {user} = req.session
-    const translations = await getTranslations(tweet.tweet_id)
+    const translations = await getTranslations(tweet.tweetId)
     const translationsCount = translations.length || 0
 
     let content = renderTweet(tweet, user, translationsCount, false)
@@ -147,7 +147,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
       let translationEls = ''
 
       for (const t of translations) {
-        const voteCounts = await getVoteCount(t.id)
+        const voteCounts = await getVoteCount(t._id)
         translationEls += renderTranslation(t, voteCounts, user)
       }
 
@@ -180,7 +180,7 @@ app.get('/user/:screenName', async (req, res) => {
     } else {
       let translationEls = ''
       for (const t of translations) {
-        const voteCount = await getVoteCount(t.id)
+        const voteCount = await getVoteCount(t._id)
         translationEls += renderTranslation(t, voteCount, req.session.user)
       }
       content += `<ul class='translations'>${translationEls}</ul>`
@@ -194,7 +194,7 @@ app.get('/user/:screenName', async (req, res) => {
 
 app.get('/fetch-tweets', async (req, res) => {
   try {
-    const tweets = await getTweets(5, req.query.offset)
+    const tweets = await getTweets(5, Number(req.query.offset))
     res.send(await renderTweets(tweets, req.session.user, true))
   } catch (err) {
     res.status(500).send('Internal ServerE')
@@ -272,7 +272,8 @@ app.post('/vote', (req, res) => {
     return
   }
 
-  addVote(id, req.session.user.id, delta)
+  addVote(id, req.session.user.id, Number(delta))
+  res.status(200).send()
 })
 
 app.get('/logout', (req, res) => {
@@ -290,7 +291,7 @@ async function renderTweets (tweets, user, showLink) {
   let els = ''
 
   for (const tweet of tweets) {
-    const translationCount = await getTranslationCount(tweet.tweet_id)
+    const translationCount = await getTranslationCount(tweet.tweetId)
     els += renderTweet(tweet, user, translationCount, showLink)
   }
   return els
