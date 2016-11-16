@@ -153,11 +153,10 @@ app.get('/tweet/:tweetID', async (req, res) => {
 
     const {user} = req.session
     const translations = await getTranslations(tweet.tweetId)
-    const translationsCount = translations.length || 0
 
     let content = renderTweet(tweet, user, false)
 
-    if (translationsCount < 1) {
+    if (translations === undefined) {
       content += '<ul class="translations"><p>No translations</p></ul>'
     } else {
       let translationEls = ''
