@@ -156,7 +156,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
 
     let content = renderTweet(tweet, user, false)
 
-    if (!translations === undefined) {
+    if (!translations.length) {
       content += '<ul class="translations"><p>No translations</p></ul>'
     } else {
       let translationEls = ''
