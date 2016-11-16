@@ -156,14 +156,15 @@ app.get('/tweet/:tweetID', async (req, res) => {
 
     let content = renderTweet(tweet, user, false)
 
-    if (translations === undefined) {
+    if (!translations === undefined) {
       content += '<ul class="translations"><p>No translations</p></ul>'
     } else {
       let translationEls = ''
 
       for (const t of translations) {
-        const voteCounts = await getVoteCount(t._id)
-        translationEls += renderTranslation(t, voteCounts, user)
+        let voteCount = 0
+        if (t.votes) voteCount = t.votes.reduce((acc, vote) => acc + vote.delta, 0)
+        translationEls += renderTranslation(t, voteCount, user)
       }
 
       content += `<h3>Translations</h3><ul class='translations'>${translationEls}</ul>`
