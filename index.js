@@ -298,6 +298,10 @@ app.get('/logout', (req, res) => {
   res.redirect(302, '/')
 })
 
+app.get('/about', (req, res) => {
+  res.render('about')
+})
+
 const port = 3000
 
 app.listen(port, () => {
