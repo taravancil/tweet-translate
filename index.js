@@ -187,7 +187,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
 app.get('/translations', async (req, res) => {
   const translations = await getRecentTranslations()
 
-  let content = `<h2>Recent Translations</h2>`
+  let content = `<h1>Recent Translations</h1>`
 
   try {
     const translations = await getRecentTranslations()
@@ -214,7 +214,7 @@ app.get('/user/:screenName', async (req, res) => {
   const uid = await getUserIDByScreenName(screenName)
   if (uid === undefined) res.status(404).send('Page Not Found')
 
-  let content = `<h2>${screenName}'s Translations</h2>`
+  let content = `<h1>${screenName}'s Translations</h1>`
 
   try {
     const translations = await getTranslationsByUserID(uid)
