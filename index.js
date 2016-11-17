@@ -184,6 +184,30 @@ app.get('/tweet/:tweetID', async (req, res) => {
   }
 })
 
+app.get('/translations', async (req, res) => {
+  const translations = await getRecentTranslations()
+
+  let content = `<h2>Recent Translations</h2>`
+
+  try {
+    const translations = await getRecentTranslations()
+
+    if (!translations.length) {
+      content += '<p>No translations</p>'
+    } else {
+      let translationEls = ''
+      for (const t of translations) {
+        translationEls += renderTranslation(t, req.session.user)
+      }
+      content += `<ul class='translations'>${translationEls}</ul>`
+    }
+
+    res.render('layout', {content: content, user: req.session.user})
+  } catch (err) {
+    res.status(500).send('Internal Server Error')
+  }
+})
+
 app.get('/user/:screenName', async (req, res) => {
   // check that the user exists
   const screenName = req.params.screenName
