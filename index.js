@@ -57,18 +57,23 @@ app.use(cookieSession({
 const INITIAL_TWEETS = [
   { _id: '582907c3680c4cda0612ff66',
     tweetId: '791094504019210240',
+    translations: [],
     html: '<blockquote class="twitter-tweet" data-cards="hidden" data-width="400"><p lang="en" dir="ltr">I made a little tool for collecting the tweet IDs of all tweets (or a subset of tweets) for a given Twitter user <a href="https://t.co/3u3txkd9YW">https://t.co/3u3txkd9YW</a></p>&mdash; Tara Vancil (@taravancil) <a href="https://twitter.com/taravancil/status/791094504019210240">October 26, 2016</a></blockquote>\n' },
   { _id: '582907c3680c4cda0612ff67',
     tweetId: '789108553315344384',
+    translations: [],
     html: '<blockquote class="twitter-tweet" data-cards="hidden" data-width="400"><p lang="en" dir="ltr">This is the cherry on top of an already fantastic piece of software. <a href="https://t.co/gf3d3ucIcc">https://t.co/gf3d3ucIcc</a></p>&mdash; Tara Vancil (@taravancil) <a href="https://twitter.com/taravancil/status/789108553315344384">October 20, 2016</a></blockquote>\n' },
   { _id: '582907c3680c4cda0612ff68',
     tweetId: '788429920821137408',
+    translations: [],
     html: '<blockquote class="twitter-tweet" data-cards="hidden" data-width="400"><p lang="en" dir="ltr">Practical Performance by <a href="https://twitter.com/samccone">@samccone</a> and <a href="https://twitter.com/paul_irish">@paul_irish</a> <a href="https://t.co/XiqGwDHfzH">https://t.co/XiqGwDHfzH</a></p>&mdash; Tara Vancil (@taravancil) <a href="https://twitter.com/taravancil/status/788429920821137408">October 18, 2016</a></blockquote>\n' },
   { _id: '582907c3680c4cda0612ff69',
     tweetId: '788420696074575873',
+    translations: [],
     html: '<blockquote class="twitter-tweet" data-cards="hidden" data-width="400"><p lang="en" dir="ltr">Slowly, but surely being at the <a href="https://twitter.com/recursecenter">@recursecenter</a> is conditioning me to not be embarrassed to ask for help.</p>&mdash; Tara Vancil (@taravancil) <a href="https://twitter.com/taravancil/status/788420696074575873">October 18, 2016</a></blockquote>\n' },
   { _id: '582907c3680c4cda0612ff6a',
     tweetId: '787797966966906880',
+    translations: [],
     html: '<blockquote class="twitter-tweet" data-cards="hidden" data-width="400"><p lang="en" dir="ltr">I&#39;m exploring what&#39;s next for me after RC. I&#39;m interested in Node, JS, cloud, crypto. Plz share opportunities you think may be a good fit!</p>&mdash; Tara Vancil (@taravancil) <a href="https://twitter.com/taravancil/status/787797966966906880">October 16, 2016</a></blockquote>\n' }]
 
 app.use(express.static('dist'))
