@@ -162,9 +162,7 @@ app.get('/tweet/:tweetID', async (req, res) => {
       let translationEls = ''
 
       for (const t of translations) {
-        let voteCount = 0
-        if (t.votes) voteCount = t.votes.reduce((acc, vote) => acc + vote.delta, 0)
-        translationEls += renderTranslation(t, voteCount, user)
+        translationEls += renderTranslation(t, user)
       }
 
       content += `<h3>Translations</h3><ul class='translations'>${translationEls}</ul>`
@@ -196,8 +194,7 @@ app.get('/user/:screenName', async (req, res) => {
     } else {
       let translationEls = ''
       for (const t of translations) {
-        const voteCount = await getVoteCount(t._id)
-        translationEls += renderTranslation(t, voteCount, req.session.user)
+        translationEls += renderTranslation(t, req.session.user)
       }
       content += `<ul class='translations'>${translationEls}</ul>`
     }
