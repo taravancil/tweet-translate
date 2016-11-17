@@ -5,18 +5,14 @@ html
     header.rounded
       if user
         style.
-          header {
-            background: ##{user.headerBg};
+          header .user {
             color: ##{user.avatarBorder};
+            background: ##{user.headerBg};
             padding: .5em 1em;
           }
 
-          header .links {
-            color: ##{user.avatarBorder};
-          }
-
           header .links a {
-              color: inherit;
+            color: ##{user.headerBg};
           }
 
           header .username {
@@ -42,18 +38,20 @@ html
             background: ##{user.linkColor};
           }
 
-        image(src=user.avatar class='avatar rounded' width='48' height='48')
-        span hi, 
-        span.username  #{user.screenName}
-        span.links
+        div.user.rounded
+          image(src=user.avatar class='avatar rounded' width='48' height='48')
+          span hi, 
+          span.username  #{user.screenName}
+        div.links
           a(href='/about') What is this?
           a(href='/translations') Recent translations
           a(href='/logout' class='logout') Logout
+
         input(type='hidden' id='uid' value=user.id)
         input(type='hidden' id='screenName' value=user.screenName)
 
       else
-        span.links
+        div.links
           a(href='/about') What is this?
           a(href='/translations') Recent translations
           a(href='/login') Login with Twitter
