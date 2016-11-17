@@ -20,6 +20,19 @@ header {
     position: relative;
 }
 
+header .links {
+    display: block;
+    margin: 1em 0;
+}
+
+header .links a {
+    margin-right: 1em;
+}
+
+header .links a:last-child {
+    margin-right: 0;
+}
+
 button {
     -webkit-appearance: none;
     -moz-appearance: none;

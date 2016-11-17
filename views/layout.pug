@@ -12,14 +12,11 @@ html
           }
 
           header .links {
-            display: flex;
-            position: absolute;
-            right: 1em;
-            bottom: .5em;
+            color: ##{user.avatarBorder};
           }
 
-          header .logout {
-            color: ##{user.avatarBorder};
+          header .links a {
+              color: inherit;
           }
 
           header .username {
@@ -49,12 +46,17 @@ html
         span hi, 
         span.username  #{user.screenName}
         span.links
+          a(href='/about') What is this?
+          a(href='/translations') Recent translations
           a(href='/logout' class='logout') Logout
         input(type='hidden' id='uid' value=user.id)
         input(type='hidden' id='screenName' value=user.screenName)
 
       else
-        a(href='/login') Login with Twitter
+        span.links
+          a(href='/about') What is this?
+          a(href='/translations') Recent translations
+          a(href='/login') Login with Twitter
 
     main
       h1 Help Translate @taravancil's Tweets
