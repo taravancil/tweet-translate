@@ -2,6 +2,12 @@ doctype html
 html
   include head.pug
   body
+    header
+      span.links
+        a(href='/') Home
+        a(href='/translations') Recent translations
+        a(href='/logout' class='login') Login with Twitter
+
     main
       h1 About
       p I'm working on translating my tweets to Español. Help me out by rating my translations or adding new ones!
